@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Path/Query Display Website with QR Code</title>
+    <title>Goa Police Pass</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         body {
@@ -12,17 +12,34 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
             background-color: #f0f0f0;
         }
         #display, #qrcode {
-            font-size: 2em;
+            width: 100%;
+            max-width: 300px;
             padding: 20px;
             background-color: white;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            margin: 10px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        #display {
+            font-size: 1.5em;
+            word-break: break-all;
+        }
+        #qrcode {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #qrcode img {
+            max-width: 100%;
+            height: auto;
         }
     </style>
 </head>
@@ -43,14 +60,15 @@
             } else {
                 displayText = 'No path or query provided';
             }
-
             displayElement.textContent = displayText;
             
             // Generate QR code
-            const currentUrl = window.location.href;
-            new QRCode(document.getElementById("qrcode"), displayText);
+            new QRCode(document.getElementById("qrcode"), {
+                text: displayText,
+                width: 256,
+                height: 256
+            });
         }
-
         window.onload = displayPathOrQuery;
     </script>
 </body>
