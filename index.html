@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goa Police Pass</title>
+    <title>Vehicle Registration QR Display</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         body {
@@ -16,9 +16,9 @@
             margin: 0;
             padding: 20px;
             box-sizing: border-box;
-            background-color: #f0f0f0;
+            transition: background-color 0.5s ease;
         }
-        #display, #qrcode {
+        #status, #display, #qrcode, #timeInfo {
             width: 100%;
             max-width: 300px;
             padding: 20px;
@@ -28,8 +28,12 @@
             margin: 10px 0;
             text-align: center;
         }
-        #display {
+        #status {
             font-size: 1.5em;
+            font-weight: bold;
+        }
+        #display {
+            font-size: 2em;
             word-break: break-all;
         }
         #qrcode {
@@ -41,35 +45,63 @@
             max-width: 100%;
             height: auto;
         }
+        #timeInfo {
+            font-size: 1em;
+        }
     </style>
 </head>
 <body>
+    <div id="status"></div>
     <div id="display"></div>
     <div id="qrcode"></div>
+    <div id="timeInfo"></div>
     <script>
-        function displayPathOrQuery() {
-            const displayElement = document.getElementById('display');
-            const path = window.location.pathname.split('/').pop();
-            const query = window.location.search.slice(1);
-            let displayText;
-            
-            if (query) {
-                displayText = query;
-            } else if (path && path !== 'index.html') {
-                displayText = path;
-            } else {
-                displayText = 'No path or query provided';
+        function formatRegistration(reg) {
+            return reg.toUpperCase().replace(/(.{2})(.{2})(.*)/, '$1$2$3');
+        }
+
+        function displayInfo() {
+            const params = new URLSearchParams(window.location.search);
+            const regQuery = params.get('r');
+            const timeQuery = params.get('t');
+
+            if (!regQuery || !timeQuery) {
+                document.getElementById('status').textContent = 'Invalid URL';
+                document.body.style.backgroundColor = '#ffcccc';
+                return;
             }
-            displayElement.textContent = displayText;
-            
+
+            const displayElement = document.getElementById('display');
+            const statusElement = document.getElementById('status');
+            const timeInfoElement = document.getElementById('timeInfo');
+
+            const formattedReg = formatRegistration(regQuery);
+            displayElement.textContent = formattedReg;
+
+            const linkTime = parseInt(timeQuery) * 1000; // Convert to milliseconds
+            const currentTime = Date.now();
+            const timeDiff = (currentTime - linkTime) / (1000 * 60 * 60); // Difference in hours
+
+            const linkDate = new Date(linkTime);
+            timeInfoElement.textContent = `Link generated on: ${linkDate.toLocaleString()}`;
+
+            if (timeDiff <= 4) {
+                statusElement.textContent = 'VALID PASS';
+                document.body.style.backgroundColor = '#90EE90';
+            } else {
+                statusElement.textContent = 'NOT VALID';
+                document.body.style.backgroundColor = '#ffcccc';
+            }
+
             // Generate QR code
             new QRCode(document.getElementById("qrcode"), {
-                text: displayText,
+                text: window.location.href,
                 width: 256,
                 height: 256
             });
         }
-        window.onload = displayPathOrQuery;
+
+        window.onload = displayInfo;
     </script>
 </body>
 </html>
