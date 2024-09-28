@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vehicle Registration QR Display</title>
+    <title>Goa Police Pass</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         body {
@@ -18,22 +18,28 @@
             box-sizing: border-box;
             transition: background-color 0.5s ease;
         }
-        #status, #display, #qrcode, #timeInfo {
+        #header, #status, #display, #qrcode, #timeInfo {
             width: 100%;
             max-width: 300px;
-            padding: 20px;
+            padding: 15px;
             background-color: white;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             margin: 10px 0;
             text-align: center;
         }
-        #status {
+        #header {
             font-size: 1.5em;
+            font-weight: bold;
+            background-color: #4a90e2;
+            color: white;
+        }
+        #status {
+            font-size: 1.3em;
             font-weight: bold;
         }
         #display {
-            font-size: 2em;
+            font-size: 1.8em;
             word-break: break-all;
         }
         #qrcode {
@@ -48,9 +54,18 @@
         #timeInfo {
             font-size: 1em;
         }
+        @media (max-width: 360px) {
+            #header, #status, #display, #timeInfo {
+                display: none;
+            }
+            #qrcode {
+                margin-top: 0;
+            }
+        }
     </style>
 </head>
 <body>
+    <div id="header">GOA POLICE PASS</div>
     <div id="status"></div>
     <div id="display"></div>
     <div id="qrcode"></div>
@@ -68,12 +83,13 @@
                 year: 'numeric',
                 hour: '2-digit',
                 minute: '2-digit',
-                second: '2-digit',
                 hour12: true
             };
             let formattedDate = date.toLocaleString('en-IN', options);
-            // Replace '/' with '-' in the date part
-            formattedDate = formattedDate.replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$1-$2-$3');
+            // Replace '/' with '-' in the date part and adjust the format
+            formattedDate = formattedDate.replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$2-$1-$3');
+            // Capitalize AM/PM
+            formattedDate = formattedDate.replace(/(am|pm)/i, m => m.toUpperCase());
             return formattedDate + ' IST';
         }
 
@@ -105,7 +121,7 @@
             const timeDiff = (currentTime - linkTime) / (60 * 60); // Difference in hours
 
             const linkDate = new Date(linkTime * 1000); // Convert seconds to milliseconds
-            timeInfoElement.textContent = `Link generated on: ${formatDateToIST(linkDate)}`;
+            timeInfoElement.textContent = `Generated: ${formatDateToIST(linkDate)}`;
 
             if (timeDiff <= 4) {
                 statusElement.textContent = 'VALID PASS';
