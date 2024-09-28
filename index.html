@@ -60,6 +60,20 @@
             return reg.toUpperCase().replace(/(.{2})(.{2})(.*)/, '$1$2$3');
         }
 
+        function formatDateToIST(date) {
+            const options = {
+                timeZone: 'Asia/Kolkata',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            };
+            return date.toLocaleString('en-IN', options);
+        }
+
         function displayInfo() {
             const params = new URLSearchParams(window.location.search);
             const regQuery = params.get('r');
@@ -78,12 +92,12 @@
             const formattedReg = formatRegistration(regQuery);
             displayElement.textContent = formattedReg;
 
-            const linkTime = parseInt(timeQuery) * 1000; // Convert to milliseconds
-            const currentTime = Date.now();
-            const timeDiff = (currentTime - linkTime) / (1000 * 60 * 60); // Difference in hours
+            const linkTime = parseInt(timeQuery);
+            const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+            const timeDiff = (currentTime - linkTime) / (60 * 60); // Difference in hours
 
-            const linkDate = new Date(linkTime);
-            timeInfoElement.textContent = `Link generated on: ${linkDate.toLocaleString()}`;
+            const linkDate = new Date(linkTime * 1000); // Convert seconds to milliseconds
+            timeInfoElement.textContent = `Link generated on: ${formatDateToIST(linkDate)} IST`;
 
             if (timeDiff <= 4) {
                 statusElement.textContent = 'VALID PASS';
