@@ -108,7 +108,9 @@
             const statusElement = document.getElementById('status');
             const timeInfoElement = document.getElementById('timeInfo');
 
-            const formattedReg = formatRegistration(regQuery);
+            // Convert the 'r' parameter to lowercase
+            const lowerCaseRegQuery = regQuery.toLowerCase();
+            const formattedReg = formatRegistration(lowerCaseRegQuery);
             displayElement.textContent = formattedReg;
 
             // Handle both second and millisecond timestamps
@@ -133,7 +135,7 @@
 
             // Generate QR code using only the 'r' parameter
             new QRCode(document.getElementById("qrcode"), {
-                text: regQuery,
+                text: lowerCaseRegQuery,
                 width: 256,
                 height: 256,
                 colorDark: "#000000",
