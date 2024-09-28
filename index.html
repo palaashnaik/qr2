@@ -63,15 +63,18 @@
         function formatDateToIST(date) {
             const options = {
                 timeZone: 'Asia/Kolkata',
-                year: 'numeric',
-                month: '2-digit',
                 day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
                 hour: '2-digit',
                 minute: '2-digit',
                 second: '2-digit',
                 hour12: true
             };
-            return date.toLocaleString('en-IN', options);
+            let formattedDate = date.toLocaleString('en-IN', options);
+            // Replace '/' with '-' in the date part
+            formattedDate = formattedDate.replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$1-$2-$3');
+            return formattedDate + ' IST';
         }
 
         function displayInfo() {
@@ -97,7 +100,7 @@
             const timeDiff = (currentTime - linkTime) / (60 * 60); // Difference in hours
 
             const linkDate = new Date(linkTime * 1000); // Convert seconds to milliseconds
-            timeInfoElement.textContent = `Link generated on: ${formatDateToIST(linkDate)} IST`;
+            timeInfoElement.textContent = `Link generated on: ${formatDateToIST(linkDate)}`;
 
             if (timeDiff <= 4) {
                 statusElement.textContent = 'VALID PASS';
