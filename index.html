@@ -95,7 +95,12 @@
             const formattedReg = formatRegistration(regQuery);
             displayElement.textContent = formattedReg;
 
-            const linkTime = parseInt(timeQuery);
+            // Handle both second and millisecond timestamps
+            let linkTime = parseInt(timeQuery);
+            if (linkTime > 1e11) {  // If timestamp is in milliseconds
+                linkTime = Math.floor(linkTime / 1000);
+            }
+
             const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
             const timeDiff = (currentTime - linkTime) / (60 * 60); // Difference in hours
 
