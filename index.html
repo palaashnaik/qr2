@@ -72,23 +72,22 @@
     <div id="timeInfo"></div>
     <script>
         function formatRegistration(reg) {
-            return reg.toUpperCase().replace(/(.{2})(.{2})(.*)/, '$1$2$3');
+            return reg.toUpperCase().replace(/(.{2})(.{2})(.*)/, '$1-$2-$3');
         }
 
         function formatDateToIST(date) {
             const options = {
                 timeZone: 'Asia/Kolkata',
                 day: '2-digit',
-                month: '2-digit',
+                month: 'short',
                 year: 'numeric',
                 hour: '2-digit',
                 minute: '2-digit',
                 hour12: true
             };
             let formattedDate = date.toLocaleString('en-IN', options);
-            // Replace '/' with '-' in the date part and adjust the format
-            formattedDate = formattedDate.replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$2-$1-$3');
-            // Capitalize AM/PM
+            // Capitalize month abbreviation and AM/PM
+            formattedDate = formattedDate.replace(/([a-z]{3})/i, m => m.toUpperCase());
             formattedDate = formattedDate.replace(/(am|pm)/i, m => m.toUpperCase());
             return formattedDate + ' IST';
         }
@@ -131,9 +130,9 @@
                 document.body.style.backgroundColor = '#ffcccc';
             }
 
-            // Generate QR code
+            // Generate QR code with only the registration number
             new QRCode(document.getElementById("qrcode"), {
-                text: window.location.href,
+                text: formattedReg,
                 width: 256,
                 height: 256
             });
