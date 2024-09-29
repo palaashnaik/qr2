@@ -60,12 +60,12 @@ function displayInfo() {
     if (timeDiff <= 4) {
       statusElement.textContent = "VALID PASS";
       // document.body.style.backgroundColor = "#73EC8B";
-      qr.classList.remove("shadow-xl", "drop-shadow-2xl", "shadow-stone-700");
+      qr.classList.add("shadow-xl", "drop-shadow-2xl", "shadow-green-700");
     } else {
       statusElement.textContent = "NOT VALID";
 
-      qr.classList.add("shadow-2xl", "drop-shadow-2xl", "shadow-white-400");
-      document.body.style.backgroundColor = "#e5383b";
+      qr.classList.add("shadow-2xl", "drop-shadow-2xl", "shadow-rose-700");
+      // document.body.style.backgroundColor = "#e5383b";
     }
 
   // Generate QR code using only the 'r' parameter
