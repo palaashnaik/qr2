@@ -70,7 +70,7 @@ function displayInfo() {
     width: 256,
     height: 256,
     colorDark: "#000000",
-    colorLight: "#ffffff",
+    colorLight: "#f3f4f6",
     correctLevel: QRCode.CorrectLevel.H,
   });
 }
