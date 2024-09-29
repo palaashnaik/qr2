@@ -27,10 +27,13 @@ function displayInfo() {
   const params = new URLSearchParams(window.location.search);
   const regQuery = params.get("r");
   const timeQuery = params.get("t");
+  const wrapper = document.getElementById("wrapper");
+  const errorMessage = document.getElementById("error_message");
 
   if (!regQuery || !timeQuery) {
-    document.getElementById("status").textContent = "Invalid URL";
-    // document.body.style.backgroundColor = "#ffcccc";
+    errorMessage.innerHTML =
+      '<img src="assets/404-page-colored.png" alt="Inalid URL">';
+    wrapper.style.display = "none";
     return;
   }
 
@@ -56,13 +59,15 @@ function displayInfo() {
   const linkDate = new Date(linkTime * 1000); // Convert seconds to milliseconds
   timeInfoElement.textContent = `Generated: ${formatDateToIST(linkDate)}`;
 
-  if (timeDiff <= 4) {
-    statusElement.textContent = "VALID PASS";
-    // document.body.style.backgroundColor = "#90EE90";
-  } else {
-    statusElement.textContent = "NOT VALID";
-    // document.body.style.backgroundColor = "#ffcccc";
-  }
+  if (statusElement)
+    if (timeDiff <= 4) {
+      statusElement.textContent = "VALID PASS";
+      // document.body.style.backgroundColor = "#90EE90";
+    } else {
+      statusElement.textContent = "NOT VALID";
+
+      // document.body.style.backgroundColor = "#ffcccc";
+    }
 
   // Generate QR code using only the 'r' parameter
   new QRCode(document.getElementById("qrcode"), {
