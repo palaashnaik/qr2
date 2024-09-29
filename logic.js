@@ -13,10 +13,10 @@ function formatDateToIST(date) {
     hour12: true,
   };
   let formattedDate = date.toLocaleString("en-IN", options);
-  // Replace '/' with '-' in the date part and adjust the format
+  // Adjust the format to day/month/year
   formattedDate = formattedDate.replace(
-    /(\d{2})\/(\d{2})\/(\d{4})/,
-    "$2-$1-$3"
+    /(\d{2})-(\d{2})-(\d{4})/,
+    "$1/$2/$3"
   );
   // Capitalize AM/PM
   formattedDate = formattedDate.replace(/(am|pm)/i, (m) => m.toUpperCase());
@@ -75,7 +75,7 @@ function displayInfo() {
     width: 256,
     height: 256,
     colorDark: "#000000",
-    colorLight: "#ffffff",
+    colorLight: "#f3f4f6",
     correctLevel: QRCode.CorrectLevel.H,
   });
 }
