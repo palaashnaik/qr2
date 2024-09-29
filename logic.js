@@ -14,10 +14,7 @@ function formatDateToIST(date) {
   };
   let formattedDate = date.toLocaleString("en-IN", options);
   // Adjust the format to day/month/year
-  formattedDate = formattedDate.replace(
-    /(\d{2})-(\d{2})-(\d{4})/,
-    "$1/$2/$3"
-  );
+  formattedDate = formattedDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$1/$2/$3");
   // Capitalize AM/PM
   formattedDate = formattedDate.replace(/(am|pm)/i, (m) => m.toUpperCase());
   return formattedDate + " IST";
@@ -62,11 +59,13 @@ function displayInfo() {
   if (statusElement)
     if (timeDiff <= 4) {
       statusElement.textContent = "VALID PASS";
-      // document.body.style.backgroundColor = "#90EE90";
+      // document.body.style.backgroundColor = "#73EC8B";
+      qr.classList.remove("shadow-xl", "drop-shadow-2xl", "shadow-stone-700");
     } else {
       statusElement.textContent = "NOT VALID";
 
-      // document.body.style.backgroundColor = "#ffcccc";
+      qr.classList.add("shadow-2xl", "drop-shadow-2xl", "shadow-white-400");
+      document.body.style.backgroundColor = "#e5383b";
     }
 
   // Generate QR code using only the 'r' parameter
