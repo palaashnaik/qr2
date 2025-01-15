@@ -60,11 +60,11 @@ function displayInfo() {
     if (timeDiff <= 4) {
       statusElement.textContent = "VALID PASS";
       // document.body.style.backgroundColor = "#73EC8B";
-      qr.classList.add("shadow-xl", "drop-shadow-2xl", "shadow-green-700");
+      qr.classList.add("transition-all", "duration-300", "shadow-[0_0_30px_rgba(34,197,94,0.5)]");
     } else {
       statusElement.textContent = "NOT VALID";
 
-      qr.classList.add("shadow-2xl", "drop-shadow-2xl", "shadow-rose-700");
+      qr.classList.add("transition-all", "duration-300", "shadow-[0_0_30px_rgba(200,30,30,0.5)]");
       // document.body.style.backgroundColor = "#e5383b";
     }
 
